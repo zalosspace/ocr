@@ -182,53 +182,55 @@ print("y_train shape:", y_train.shape)
 # Normalize
 x_train = x_train.astype(np.float32) / 255.0
 
-n = MLP(784, [32, 32, 62])
+print(np.unique(y_train, return_counts=True))
 
-for k in range(10):
-    total_loss = 0.0
-    for x, target in zip(x_train, y_train):
-        # Forward pass
-        outputs = n(x)
-        # One hotass target
-        target_vector = [0.0] * 62
-        target_vector[int(target)] = 1.0
+# n = MLP(784, [32, 32, 62])
 
-        loss = 0.0
-
-        for output, target_value in zip(outputs, target_vector):
-            loss += (output - target_value) ** 2
-
-        # Reset gradients
-        for p in n.parameters():
-            p.grad = 0.0
-
-        # Backward pass
-        loss.backward()
-
-        # Update pass
-        for p in n.parameters():
-            p.data += -0.05 * p.grad
-
-        total_loss += loss.data
-
-    print(k, total_loss)
-
-for x, y_true in zip(x_train[:10], y_train[:10]):
-
-    outputs = n(x)
-
-
-    prediction = max(
-        range(62),
-        key=lambda i: outputs[i].data
-    )
-
-    print(len(outputs))
-    print(outputs[:5])
-    print(
-        "predicted:", prediction,
-        "actual:", y_true
-    )
+# for k in range(40):
+#     total_loss = 0.0
+#     for x, target in zip(x_train, y_train):
+#         # Forward pass
+#         outputs = n(x)
+#         # One hotass target
+#         target_vector = [0.0] * 62
+#         target_vector[int(target)] = 1.0
+#
+#         loss = 0.0
+#
+#         for output, target_value in zip(outputs, target_vector):
+#             loss += (output - target_value) ** 2
+#
+#         # Reset gradients
+#         for p in n.parameters():
+#             p.grad = 0.0
+#
+#         # Backward pass
+#         loss.backward()
+#
+#         # Update pass
+#         for p in n.parameters():
+#             p.data += -0.05 * p.grad
+#
+#         total_loss += loss.data
+#
+#     print(k, total_loss)
+#
+# for x, y_true in zip(x_train[:10], y_train[:10]):
+#
+#     outputs = n(x)
+#
+#
+#     prediction = max(
+#         range(62),
+#         key=lambda i: outputs[i].data
+#     )
+#
+#     print(len(outputs))
+#     print(outputs[:5])
+#     print(
+#         "predicted:", prediction,
+#         "actual:", y_true
+#     )
 
 # print("parameters:", n.parameters(),
 #     "size:", len(n.parameters()))

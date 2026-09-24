@@ -2,3 +2,6 @@ pandas
 numpy
 pillow
 scikit-learn
+matplotlib
+tensorflow
+pyqt6
