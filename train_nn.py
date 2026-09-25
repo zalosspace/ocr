@@ -5,7 +5,7 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-train_sample_count = 100000
+train_sample_count = 600000
 with gzip.open("data/emnist-byclass-train-images-idx3-ubyte.gz", "rb") as f:
     # get file metadata, 4 byte each
     magic, n, rows, cols = struct.unpack(">IIII", f.read(16))
@@ -35,8 +35,8 @@ x_train = x_train.astype(np.float32) / 255.0
 nn = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(784,)),
 
-    tf.keras.layers.Dense(32, activation='relu'),
-    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(128, activation='relu'),
 
     tf.keras.layers.Dense(62, activation='softmax')
     ])
@@ -48,7 +48,7 @@ nn.compile(
 
 history = nn.fit(
         x_train, y_train,
-        epochs=200, batch_size=32, validation_split=0.2, verbose=1
+        epochs=30, batch_size=32, validation_split=0.2, verbose=1
         )
 
 plt.figure()

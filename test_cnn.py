@@ -17,7 +17,7 @@ def preprocess(img, sharpness=1.5, contrast=1.3):
 
     return img
 
-img = Image.open('data/h.jpg')
+img = Image.open('7.jpg')
 img = preprocess(img)
 
 # Match EMNIST orientation
@@ -42,11 +42,12 @@ img.show()
 
 # Normalize
 img = np.array(img, dtype=np.float32) / 255.0
-img = img.reshape(1, 784)
+# img = img.reshape(1, 784)
+img = img.reshape(1, 28, 28, 1)
 
 print(img.shape)
 
-nn = tf.keras.models.load_model("emnist_model.keras")
+cnn = tf.keras.models.load_model("emnist_cnn_model.keras")
 
 #################
 # EMNIST MAPPING:
@@ -64,16 +65,14 @@ def class_to_char(class_id):
         return chr(ord('a') + class_id - 36)
 
 # Predict
-# output = nn.predict(img, verbose=0)
-# prediction = np.argmax(output)
-# character = class_to_char(prediction)
+output = cnn.predict(img, verbose=0)[0]
+
+class_id = np.argmax(output)
+
+print("char:", class_to_char(class_id))
+print("confidence:", output[class_id])
+
+# top = np.argsort(output)[::-1][:10]
 #
-# print("predicted:", character)
-# print("class_id:", prediction)
-
-output = nn.predict(img, verbose=0)[0]
-
-top = np.argsort(output)[::-1][:10]
-
-for i in top:
-    print(i, class_to_char(i), output[i])
+# for i in top:
+#     print(i, class_to_char(i), output[i])
